@@ -26,7 +26,7 @@ debezium_connectors:
   - name: "mosip_idrepo"
     tables: "idrepo.anonymous_profile,idrepo.channel_info"
   - name: "postgres"
-    tables: "postgres.packet_tracker"
+    tables: "public.packet_tracker"
 
 es_kafka_connectors:
   enabled: true
