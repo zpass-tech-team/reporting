@@ -36,57 +36,31 @@ curl \
 
           "behavior.on.null.values": "DELETE",
 
-          "transforms": "extValue1,extValue2,extKey1,extKey2,tsconvert01,tsconvert02,stringtojson01,anonTransform,anonTransformProfile,join01,join02,tsSelect",
+          "transforms": "debezExtract,tsconvert01,tsconvert04,tsconvert05,tsconvert07,tsSelect",
 
-          "transforms.extValue1.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
-          "transforms.extValue1.field": "payload",
-          "transforms.extValue2.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
-          "transforms.extValue2.field": "after",
-
-          "transforms.extKey1.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
-          "transforms.extKey1.field": "payload",
-          "transforms.extKey2.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
-          "transforms.extKey2.field": "id",
+          "transforms.debezExtract.type": "io.debezium.transforms.ExtractNewRecordState",
+          "transforms.debezExtract.delete.handling.mode": "drop",
+          "transforms.debezExtract.drop.tombstones": "false",
+          "transforms.debezExtract.add.fields": "source.ts_ms:ts_ms,table,lsn",
+          "transforms.debezExtract.add.fields.prefix": "source_",
 
           "transforms.tsconvert01.type": "io.mosip.kafka.connect.transforms.TimestampConverterAdv$Value",
-          "transforms.tsconvert01.field": "cr_dtimes",
-          "transforms.tsconvert01.input.type": "micro_sec",
+          "transforms.tsconvert01.field": "source_ts_ms",
 
-          "transforms.tsconvert02.type": "io.mosip.kafka.connect.transforms.TimestampConverterAdv$Value",
-          "transforms.tsconvert02.field": "upd_dtimes",
-          "transforms.tsconvert02.input.type": "micro_sec",
+          "transforms.tsconvert04.type": "io.mosip.kafka.connect.transforms.TimestampConverterAdv$Value",
+          "transforms.tsconvert04.field": "cr_dtimes",
+          "transforms.tsconvert04.input.type": "micro_sec",
 
-          "transforms.stringtojson01.type": "io.mosip.kafka.connect.transforms.StringToJson$Value",
-          "transforms.stringtojson01.input.field": "comments",
+          "transforms.tsconvert05.type": "io.mosip.kafka.connect.transforms.TimestampConverterAdv$Value",
+          "transforms.tsconvert05.field": "upd_dtimes",
+          "transforms.tsconvert05.input.type": "micro_sec",
 
-          "transforms.anonTransform.type": "io.mosip.kafka.connect.transforms.AnonymousProfileTransform$Value",
-          "transforms.anonTransform.profiles.fields.list": "comments",
-          "transforms.anonTransform.es.url": '\"$ES_URL\"',
-          "transforms.anonTransform.kafka.topic.name": '\"$ES_INDICES\"',
-
-          "transforms.anonTransformProfile.type": "io.mosip.kafka.connect.transforms.AnonymousProfileTransform$Value",
-          "transforms.anonTransformProfile.profiles.fields.list": "comments.responses",
-          "transforms.anonTransformProfile.es.url": '\"$ES_URL\"',
-          "transforms.anonTransformProfile.kafka.topic.name": '\"$ES_INDICES\"',
-
-          "transforms.anonTransformProfile.type": "io.mosip.kafka.connect.transforms.AnonymousProfileTransform$Value",
-          "transforms.anonTransformProfile.profiles.fields.list": "comments.responses.message",
-          "transforms.anonTransformProfile.es.url": '\"$ES_URL\"',
-          "transforms.anonTransformProfile.kafka.topic.name": '\"$ES_INDICES\"',
-
-          "transforms.anonTransformProfile.type": "io.mosip.kafka.connect.transforms.AnonymousProfileTransform$Value",
-          "transforms.anonTransformProfile.profiles.fields.list": "comments.responses.message.status",
-          "transforms.anonTransformProfile.es.url": '\"$ES_URL\"',
-          "transforms.anonTransformProfile.kafka.topic.name": '\"$ES_INDICES\"',
-
-          "transforms.anonTransformProfile.type": "io.mosip.kafka.connect.transforms.AnonymousProfileTransform$Value",
-          "transforms.anonTransformProfile.profiles.fields.list": "comments.responses.message.message",
-          "transforms.anonTransformProfile.es.url": '\"$ES_URL\"',
-          "transforms.anonTransformProfile.kafka.topic.name": '\"$ES_INDICES\"',
+          "transforms.tsconvert07.type": "io.mosip.kafka.connect.transforms.TimestampConverterAdv$Value",
+          "transforms.tsconvert07.field": "resume_timestamp",
+          "transforms.tsconvert07.input.type": "micro_sec",
 
           "transforms.tsSelect.type": "io.mosip.kafka.connect.transforms.TimestampSelector$Value",
           "transforms.tsSelect.ts.order": "cr_dtimes",
           "transforms.tsSelect.output.field": "@timestamp_gen"
-
       }
 }';
